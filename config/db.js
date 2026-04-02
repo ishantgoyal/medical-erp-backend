@@ -16,37 +16,7 @@
 // module.exports = pool.promise();
 
 
-//  aur aiven db connect krne ke liye yeh  wala code use krna hai
 
-
-// const mysql = require('mysql2');
-
-// const pool = mysql.createPool({
-//     host: 'mysql-2525ac12-eshantgoyal27-cfd6.e.aivencloud.com', 
-//     user: 'avnadmin',
-//     password: 'AVNS_jUdMZBH_lyFwotQvzKm', 
-//     database: 'Medical_ishu_Live', 
-//     port: 14467,
-//     ssl: {
-//         rejectUnauthorized: false 
-//     },
-//     waitForConnections: true,
-//     connectionLimit: 10,
-//     queueLimit: 0,
-//     enableKeepAlive: true, 
-//     keepAliveInitialDelay: 10000
-// });
-
-// pool.getConnection((err, connection) => {
-//     if (err) {
-//         console.error('❌ Database connection failed:', err.message);
-//     } else {
-//         console.log('✅ Connected to Aiven MySQL (Medical_ishu_Live)!');
-//         connection.release();
-//     }
-// });
-
-// module.exports = pool.promise();
 
 
 //  aur aiven db  ke sath env ka code connect krne ke liye yeh  wala code use krna hai
