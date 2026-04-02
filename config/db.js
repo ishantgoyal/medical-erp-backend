@@ -1,19 +1,4 @@
-// Local db connect krne ke liye ye code use krna hai
 
-
-// const mysql = require('mysql2');
-
-// const pool = mysql.createPool({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'Eshant@1234',     
-//     database: 'medicalishant',   
-//     waitForConnections: true,
-//     connectionLimit: 10,
-//     queueLimit: 0
-// });
-
-// module.exports = pool.promise();
 
 
 
