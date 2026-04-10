@@ -128,7 +128,7 @@ exports.getProductById = async (req, res) => {
 };
 
 exports.updateProduct = async (req, res) => {
-    const connection = await db.getConnection(); a
+    const connection = await db.getConnection(); 
     try {
         await connection.beginTransaction();
 
