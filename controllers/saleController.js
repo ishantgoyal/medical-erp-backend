@@ -96,17 +96,45 @@ exports.addSales = async (req, res) => {
 
 
 // 2. SEARCH STOCK (Added product_id, pack, conv for Sales screen)
+// exports.searchStockForSales = async (req, res) => {
+//     try {
+//         const user_id = req.user_id;
+//         const [rows] = await db.execute(
+//             `SELECT id AS stock_id, product_id, medicine_name, batch_no, expiry_date, 
+//                     current_qty, mrp, purchase_rate, gst_percent, hsn, product_type, pack, conv 
+//              FROM stock 
+//              WHERE user_id = ? AND current_qty > 0 AND expiry_date > CURRENT_DATE`,
+//             [user_id]
+//         );
+//         res.status(200).json({ status: true, data: rows });
+//     } catch (error) {
+//         res.status(500).json({ status: false, message: error.message });
+//     }
+// };
+
 exports.searchStockForSales = async (req, res) => {
     try {
         const user_id = req.user_id;
+        const search = req.query.search || '';
+
+        // Search query empty hai toh early return
+        if (!search.trim()) {
+            return res.status(400).json({ status: false, message: "Search query required hai" });
+        }
+
         const [rows] = await db.execute(
             `SELECT id AS stock_id, product_id, medicine_name, batch_no, expiry_date, 
                     current_qty, mrp, purchase_rate, gst_percent, hsn, product_type, pack, conv 
              FROM stock 
-             WHERE user_id = ? AND current_qty > 0 AND expiry_date > CURRENT_DATE`,
-            [user_id]
+             WHERE user_id = ? 
+               AND current_qty > 0 
+               AND expiry_date > CURRENT_DATE
+               AND medicine_name LIKE ?`,
+            [user_id, `%${search.trim()}%`]
         );
+
         res.status(200).json({ status: true, data: rows });
+
     } catch (error) {
         res.status(500).json({ status: false, message: error.message });
     }

@@ -18,6 +18,7 @@ const stockRoutes = require('./routes/stockRoutes');
 const saleReturnRoutes = require('./routes/saleReturnRoutes');
 const paymentRoutes = require('./routes/supplierPaymentRoutes');
 const ladgerViewRoutes = require('./routes/supplierLedgerViewRoutes');
+const whatsapppdfbillRoutes = require('./routes/billRoutes');
 const dashboardStatusRoutes = require('./routes/dashboardRoutes');
 
 
@@ -55,8 +56,14 @@ app.use('/api/sale-return', saleReturnRoutes);
 
 
 // ------------------- ShopKeepar Payment and Ledger ROUTES -----------------------
+
 app.use('/api/payment', paymentRoutes);
 app.use('/api/ledger', ladgerViewRoutes);
+
+// ------------------- whats app pdf and bill download ROUTES -----------------------
+
+app.use('/api/bills', whatsapppdfbillRoutes);
+
 
 
 
@@ -65,7 +72,7 @@ app.get('/', (req, res) => {
     status: true,
     message: "Medical ERP Backend is running smoothly 🚀",
     version: "1.0.0",
-    author: "Esant Goyal"
+    author: "Eshant Goyal"
   });
 });
 
