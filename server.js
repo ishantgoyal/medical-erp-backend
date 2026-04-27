@@ -7,12 +7,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+const cron        = require('node-cron');
 
 
 const authRoutes = require('./routes/authRoutes');
 const purchaseRoutes = require('./routes/purchaseRoutes');
 const productRoutes = require('./routes/productRoutes');
 const supplierRoutes = require('./routes/supplierRoutes');
+const suppliersOrderRoutes = require('./routes/supplierOrderRoute');
 const saleRoutes = require('./routes/saleRoutes');
 const stockRoutes = require('./routes/stockRoutes');
 const saleReturnRoutes = require('./routes/saleReturnRoutes');
@@ -20,6 +22,10 @@ const paymentRoutes = require('./routes/supplierPaymentRoutes');
 const ladgerViewRoutes = require('./routes/supplierLedgerViewRoutes');
 const whatsapppdfbillRoutes = require('./routes/billRoutes');
 const dashboardStatusRoutes = require('./routes/dashboardRoutes');
+const dailyReportRoutes = require('./routes/dailyReportRoute');
+const DailyReport = require('./controllers/dailyReportController');
+
+
 
 
 // -------------------Auth ROUTES -----------------------
@@ -33,6 +39,12 @@ app.use('/api/dashboard', dashboardStatusRoutes);
 // -------------------Supplier ROUTES -----------------------
 
 app.use('/api/supplier', supplierRoutes);
+
+
+// -------------------Supplier Order ROUTES -----------------------
+app.use('/api/purchase-order', suppliersOrderRoutes);
+
+
 
 // -------------------Product ROUTES -----------------------
 
@@ -60,9 +72,13 @@ app.use('/api/sale-return', saleReturnRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/ledger', ladgerViewRoutes);
 
-// ------------------- whats app pdf and bill download ROUTES -----------------------
+// -------------------  scren for sale : whats app pdf and bill download ROUTES -----------------------
 
 app.use('/api/bills', whatsapppdfbillRoutes);
+
+// ------------------- Daily Report ROUTES -----------------------
+
+app.use('/api/daily-report', dailyReportRoutes);
 
 
 
@@ -79,6 +95,15 @@ app.get('/', (req, res) => {
 
 app.use((req, res) => {
   res.status(404).json({ status: false, message: "Route not found!" });
+});
+
+// Step 4 — Cron job — raat 9 baje chalega
+// Format: 'second minute hour day month weekday'
+// '0 21 * * *' = har din raat 9:00 baje
+cron.schedule('0 21 * * *', () => {
+    DailyReport.sendDailyReportToAll();
+}, {
+    timezone: 'Asia/Kolkata' // IST time
 });
 
 
@@ -99,3 +124,13 @@ app.listen(PORT, () => {
   console.log(`🏥 Medical ERP: Online`);
   console.log(`-------------------------------------------`);
 });
+
+
+// ─────────────────────────────────────────────
+// TEST karna ho toh yeh use karo
+// Har 1 minute mein chalega — test ke baad hata dena
+// ─────────────────────────────────────────────
+// cron.schedule('* * * * *', () => {
+//     console.log('Test cron running...');
+//     DailyReport.sendDailyReportToAll();
+// });
